@@ -11,6 +11,23 @@
 - Each card is its own component with its own image spot, biggest text and accent colour.
 - Any empty field shows a short filler line ("Not listed yet", "TBC", "No photo yet"), never a blank or `undefined`.
 
+## Send to cards: thinking animation and input lock
+
+![Recording: the input locks and dots pulse for about 2 seconds, then the three cards appear](docs/flow.gif)
+
+Measured in the app (two runs, timer counted from pressing Enter):
+
+| Moment | Time |
+| --- | --- |
+| Input locks ("Planning your weekend…") and pulsing dots appear in the reply bubble | ~0.05 s |
+| Dots disappear, Stay, Experience and Food cards appear, input unlocks | ~2.05 s |
+
+The dots run for 2 seconds: `requestPlan` waits for the mock API and a 2 s minimum (`MIN_THINKING_MS` in `src/components/chat/Chat.tsx`). The "s after send" badge in the bottom corner is a timer added only for the recording; it isn't part of the app.
+
+| 1. Just sent: input locked, dots pulsing | 2. Still thinking (1.2 s) | 3. Cards in, input unlocked |
+| --- | --- | --- |
+| ![](docs/flow-1-locked.png) | ![](docs/flow-2-thinking.png) | ![](docs/flow-3-cards.png) |
+
 ## Where things live
 
 | Piece | File |
