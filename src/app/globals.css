@@ -93,15 +93,15 @@
   }
 }
 
-@keyframes dot-bounce {
+@keyframes dot-pulse {
   0%,
-  60%,
+  70%,
   100% {
-    transform: translateY(0);
-    opacity: 0.35;
+    transform: scale(0.6);
+    opacity: 0.3;
   }
-  30% {
-    transform: translateY(-4px);
+  35% {
+    transform: scale(1);
     opacity: 1;
   }
 }
@@ -124,7 +124,7 @@
 }
 
 .thinking-dot {
-  animation: dot-bounce 1.2s ease-in-out infinite;
+  animation: dot-pulse 1.2s ease-in-out infinite;
 }
 
 .shimmer-text {

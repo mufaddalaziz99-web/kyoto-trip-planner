@@ -10,9 +10,10 @@ export function Composer({ onSend, busy }: { onSend: (text: string) => void; bus
 
   // Focus on load for keyboard users on laptops; skip on touch so the
   // phone keyboard doesn't cover the welcome screen.
+  // Runs again when the input unlocks, so a laptop guest can type the next request straight away.
   useEffect(() => {
-    if (window.matchMedia("(pointer: fine)").matches) inputRef.current?.focus();
-  }, []);
+    if (!busy && window.matchMedia("(pointer: fine)").matches) inputRef.current?.focus();
+  }, [busy]);
 
   function submit(e: FormEvent) {
     e.preventDefault();
@@ -24,7 +25,14 @@ export function Composer({ onSend, busy }: { onSend: (text: string) => void; bus
   return (
     <div className="pointer-events-none sticky bottom-0 bg-gradient-to-t from-white from-70% to-white/0 pt-6 pb-[max(12px,env(safe-area-inset-bottom))]">
       <form onSubmit={submit} className="pointer-events-auto mx-auto w-full max-w-[760px] px-4 sm:px-6">
-        <div className="flex items-center gap-2 rounded-full border border-line bg-white py-2 pr-2 pl-5 shadow-search transition-shadow focus-within:border-ink/40 focus-within:shadow-elev-3">
+        {/* Locked while a plan is loading: one request at a time. */}
+        <div
+          className={`flex items-center gap-2 rounded-full border py-2 pr-2 pl-5 transition-[box-shadow,background-color,border-color] duration-200 ${
+            busy
+              ? "border-line-soft bg-faint shadow-none"
+              : "border-line bg-white shadow-search focus-within:border-ink/40 focus-within:shadow-elev-3"
+          }`}
+        >
           <label htmlFor="trip-request" className="sr-only">
             Ask for a Kyoto trip
           </label>
@@ -33,10 +41,11 @@ export function Composer({ onSend, busy }: { onSend: (text: string) => void; bus
             id="trip-request"
             value={value}
             onChange={(e) => setValue(e.target.value)}
-            placeholder="Ask for a Kyoto trip"
+            disabled={busy}
+            placeholder={busy ? "Planning your weekend…" : "Ask for a Kyoto trip"}
             autoComplete="off"
             enterKeyHint="send"
-            className="min-w-0 flex-1 bg-transparent py-1.5 text-[16px] leading-6 outline-none placeholder:text-muted focus-visible:outline-none"
+            className="min-w-0 flex-1 bg-transparent py-1.5 text-[16px] leading-6 outline-none placeholder:text-muted focus-visible:outline-none disabled:cursor-not-allowed"
           />
           <button
             type="submit"

@@ -1,56 +1,72 @@
 import type { ExperienceItem } from "@/lib/types";
-import { dayAndMonth, dotJoin, formatDuration, formatYen } from "@/lib/format";
-import { LanternIcon } from "@/components/icons";
+import { formatDate, formatHours, formatMoney } from "@/lib/format";
+import { LanternIcon, PinIcon, StarIcon } from "@/components/icons";
 import { CardShell, TypeTag } from "./CardShell";
+import { Filler, orFiller } from "./Filler";
 import { Photo } from "./Photo";
 
-// Your weekend, day by day: stacked day blocks, image strip at the bottom.
+// What you'll do: the start time leads, details stacked, image strip along the bottom.
 export function ExperienceCard({ item }: { item: ExperienceItem }) {
+  const perGuest = formatMoney(item.pricePerGuest, item.currency);
+  const forTwo = formatMoney(item.totalForTwo, item.currency);
+  const soldOut = item.availability.toLowerCase().includes("sold out");
+
   return (
-    <CardShell label={`${item.label}: ${item.title}`}>
-      <div className="flex flex-1 flex-col gap-2 p-4 pb-3">
-        <TypeTag tone="experience" icon={<LanternIcon className="size-3.5" />}>
-          {item.label}
-        </TypeTag>
-        <h3 className="text-[18px] leading-6 font-semibold tracking-[-0.01em]">{item.title}</h3>
+    <CardShell label={`${item.label || "Experience"}: ${item.title || "not listed yet"}`}>
+      <div className="flex flex-1 flex-col gap-2 p-4">
+        <div className="flex items-center justify-between gap-2">
+          <TypeTag tone="experience" icon={<LanternIcon className="size-3.5" />}>
+            {orFiller(item.label, true)}
+          </TypeTag>
+          <span
+            className={`rounded-full px-2.5 py-1 text-[12px] leading-4 font-semibold ${
+              soldOut ? "bg-[#fff5f3] text-[#c13515]" : "bg-[#e6f6e9] text-[#008a05]"
+            }`}
+          >
+            {orFiller(item.availability, true)}
+          </span>
+        </div>
 
-        <ol className="mt-1">
-          {item.days.map((d, i) => {
-            const { day, month } = dayAndMonth(d.date);
-            const last = i === item.days.length - 1;
-            const price = d.pricePerPerson === null ? "" : `${formatYen(d.pricePerPerson)} per person`;
-            return (
-              <li key={d.date} className="grid grid-cols-[44px_20px_1fr] gap-x-2">
-                <div className="pt-1 text-center">
-                  <p className="text-[11px] leading-3 font-semibold tracking-[0.04em] text-muted uppercase">{d.day}</p>
-                  <p className="mt-0.5 text-[17px] leading-5 font-semibold">{day}</p>
-                  <p className="text-[11px] leading-3 text-muted">{month}</p>
-                </div>
+        <div className="mt-1 flex items-baseline gap-2">
+          <p className="text-[28px] leading-8 font-semibold tracking-[-0.02em] tabular-nums">
+            {orFiller(item.startTime, true)}
+          </p>
+          <p className="text-[13px] leading-[18px] text-muted">
+            {orFiller(formatDate(item.date))} · {orFiller(formatHours(item.durationHours))}
+          </p>
+        </div>
 
-                {/* timeline rail */}
-                <div className="relative flex justify-center" aria-hidden="true">
-                  <span className="relative z-10 mt-[9px] size-2.5 rounded-full border-2 border-white bg-experience ring-2 ring-experience-tint" />
-                  {!last && <span className="absolute top-5 bottom-0 w-px bg-experience/25" />}
-                </div>
+        <div>
+          <h3 className="text-[16px] leading-[22px] font-semibold">{orFiller(item.title)}</h3>
+          <p className="mt-1 flex flex-wrap items-center gap-x-1 text-[13px] leading-[18px] text-muted">
+            {orFiller(item.category)}
+            <span className="text-subtle">·</span>
+            Hosted by {orFiller(item.hostName)}
+            <span className="text-subtle">·</span>
+            <StarIcon className="size-3 text-ink" />
+            {item.rating === null ? <Filler /> : <span className="font-semibold text-ink">{item.rating.toFixed(2)}</span>}
+          </p>
+        </div>
 
-                <div className={last ? "pb-1" : "pb-4"}>
-                  <p className="text-[22px] leading-7 font-semibold tracking-[-0.02em] tabular-nums">{d.startTime}</p>
-                  <p className="text-[15px] leading-5 font-medium">{d.name}</p>
-                  <p className="mt-0.5 text-[13px] leading-[18px] text-muted">
-                    {dotJoin(formatDuration(d.durationMins), price)}
-                  </p>
-                </div>
-              </li>
-            );
-          })}
-        </ol>
+        <p className="flex items-start gap-1.5 text-[13px] leading-[18px]">
+          <PinIcon className="mt-px size-4 shrink-0 text-experience" />
+          <span>{orFiller(item.meetingPoint)}</span>
+        </p>
+
+        <p className="mt-auto pt-2 text-[15px] leading-5">
+          {perGuest ? (
+            <>
+              <span className="font-semibold">{perGuest}</span>
+              <span className="text-muted"> per guest</span>
+            </>
+          ) : (
+            <Filler />
+          )}
+          <span className="text-muted"> · {forTwo ? `${forTwo} for 2` : <Filler />}</span>
+        </p>
       </div>
 
-      <div className="grid grid-cols-3 gap-0.5">
-        {item.photoUrls.slice(0, 3).map((url, i) => (
-          <Photo key={i} src={url} alt={item.days[i]?.name ?? ""} size="thumb" className="aspect-[4/3]" />
-        ))}
-      </div>
+      <Photo src={item.photoUrl} alt={item.title} size="hero" className="aspect-[3/1]" />
     </CardShell>
   );
 }

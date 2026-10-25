@@ -1,51 +1,59 @@
-// Mock response shape from the Kyoto chat card spec (v0.3).
-// Cards read these keys and nothing else. Empty text is "", empty numbers are null.
+// Mock response shape. Each item is one row from the Kyoto Weekend Prototype
+// Content Pack (Stays, Experiences, Food sheets) plus its card `type`.
+// Empty text is "", empty numbers are null. Prices are whole USD for 2 guests.
 
 export type StayItem = {
   type: "stay";
   label: string;
-  stayName: string;
-  area: string;
-  checkIn: string; // YYYY-MM-DD
-  checkOut: string; // YYYY-MM-DD
-  nights: number;
-  guests: number | null;
-  pricePerNight: number | null; // whole yen
-  currency: "JPY";
+  optionId: string;
+  title: string;
+  propertyType: string;
+  neighbourhood: string;
+  nights: number | null;
+  pricePerNight: number | null;
+  totalPrice: number | null; // for all nights
+  currency: string;
   rating: number | null;
   reviewCount: number | null;
+  hostName: string;
+  highlight: string;
+  checkIn: string; // YYYY-MM-DD
+  checkOut: string; // YYYY-MM-DD
   photoUrl: string;
-};
-
-export type ExperienceDay = {
-  date: string; // YYYY-MM-DD
-  day: string; // "Fri"
-  startTime: string; // HH:MM, 24-hour
-  name: string;
-  durationMins: number | null;
-  pricePerPerson: number | null; // whole yen
 };
 
 export type ExperienceItem = {
   type: "experience";
   label: string;
+  optionId: string;
   title: string;
-  days: ExperienceDay[];
-  currency: "JPY";
-  photoUrls: string[];
+  category: string;
+  hostName: string;
+  date: string; // YYYY-MM-DD
+  startTime: string; // HH:MM, 24-hour
+  durationHours: number | null;
+  pricePerGuest: number | null;
+  totalForTwo: number | null;
+  currency: string;
+  rating: number | null;
+  meetingPoint: string;
+  availability: string;
+  photoUrl: string;
 };
 
 export type FoodItem = {
   type: "food";
   label: string;
-  meal: string;
-  date: string; // YYYY-MM-DD
-  time: string; // HH:MM, 24-hour
-  restaurantName: string;
+  optionId: string;
+  placeName: string;
   cuisine: string;
-  area: string;
-  priceLevel: string; // "¥" to "¥¥¥¥"
+  neighbourhood: string;
+  meal: string;
+  priceLevel: string; // "$" to "$$$$"
+  costForTwo: number | null;
+  currency: string;
   walkMinutes: number | null;
+  bookingNote: string;
   photoUrl: string;
 };
 

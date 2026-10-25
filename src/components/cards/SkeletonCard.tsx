@@ -31,23 +31,17 @@ export function SkeletonCard({ variant, className = "" }: { variant: Variant; cl
       {variant === "experience" && (
         <>
           <div className="flex flex-1 flex-col gap-3 p-4">
-            <Bar className="h-5 w-24 rounded-full" />
-            <Bar className="h-5 w-2/3" />
-            {[0, 1, 2].map((i) => (
-              <div key={i} className="mt-2 flex gap-4">
-                <Bar className="h-11 w-9" />
-                <div className="flex flex-1 flex-col gap-2">
-                  <Bar className="h-5 w-16" />
-                  <Bar className="h-3.5 w-3/4" />
-                </div>
-              </div>
-            ))}
+            <div className="flex justify-between">
+              <Bar className="h-5 w-24 rounded-full" />
+              <Bar className="h-5 w-20 rounded-full" />
+            </div>
+            <Bar className="mt-1 h-7 w-24" />
+            <Bar className="h-4 w-4/5" />
+            <Bar className="h-3.5 w-3/5" />
+            <Bar className="h-3.5 w-2/3" />
+            <Bar className="mt-2 h-4 w-1/2" />
           </div>
-          <div className="grid grid-cols-3 gap-0.5">
-            {[0, 1, 2].map((i) => (
-              <span key={i} className="skeleton block aspect-[4/3]" />
-            ))}
-          </div>
+          <span className="skeleton block aspect-[3/1]" />
         </>
       )}
 

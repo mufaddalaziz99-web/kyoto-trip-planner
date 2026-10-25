@@ -1,58 +1,27 @@
 # Kyoto trip-planner chat
 
-A chat prototype for the Thursday guest test with UX Research. Any message plays a thinking
-animation, then returns three cards: Stay, Experience and Food. Built from the
-*Card and error-state design spec v0.3*.
+![A chat thread showing the Stay, Experience and Food cards for a Kyoto weekend](docs/screenshot.png)
 
-**Status:** happy path is built. The error bubble and the `?fail=1` switch come next.
+**Run it:** `npm install && npm run dev`, then open http://localhost:3000.
 
-## Run it
+## What it does
 
-```bash
-npm install
-npm run dev
-```
+- Send any trip request. The input locks and pulsing dots show in the reply bubble for about 2 seconds.
+- The reply is three cards, always in this order: Stay, Experience, Food.
+- Each card is its own component with its own image spot, biggest text and accent colour.
+- Any empty field shows a short filler line ("Not listed yet", "TBC", "No photo yet"), never a blank or `undefined`.
 
-Open http://localhost:3000. No login, works on phone and laptop.
+## Where things live
 
-## How it works
-
-| Piece | Where |
+| Piece | File |
 | --- | --- |
-| Mock content, one row per workbook sheet | `src/data/kyoto-weekend.ts` |
-| Response shape (cards read these keys only) | `src/lib/types.ts` |
-| Fake API: `POST /api/plan` returns 3 items, in order | `src/app/api/plan/route.ts` |
-| Chat state, thinking timing, scroll | `src/components/chat/Chat.tsx` |
-| One component per card type, picked by `type` | `src/components/cards/` |
-| Design tokens (Airbnb palette, elevation, motion) | `src/app/globals.css` |
+| Mock rows, one from each content-pack sheet (Stays, Experiences, Food) | `src/data/kyoto-weekend.ts` |
+| Fake API, `POST /api/plan`, returns the three items | `src/app/api/plan/route.ts` |
+| Card components | `src/components/cards/StayCard.tsx`, `ExperienceCard.tsx`, `FoodCard.tsx` |
+| Filler line for empty fields | `src/components/cards/Filler.tsx` |
+| Chat, input lock and thinking timing | `src/components/chat/Chat.tsx`, `Composer.tsx` |
 
-### Timing
-
-- Thinking appears in the same render as the guest's message (measured ~10 ms).
-- It holds for at least 1.5 s, and until the plan's photos are preloaded (capped at 3 s), so
-  cards never land with empty image boxes.
-- Cards replace it in a fixed order, Stay, Experience, Food, 150 ms apart.
-
-### Design notes
-
-- Colours, shadows and the enter curve come from airbnb.com's live tokens. Rausch pink is used
-  only for the send button and the brand mark; each card carries its own accent from the spec
-  (indigo, vermilion, matcha).
-- Layout: on a laptop the three cards sit in one row at equal height. On a tablet they form a
-  swipeable row that snaps card by card. On a phone they stack full width, as the spec asks, so
-  guests see all three without having to find the swipe. While thinking, skeleton cards hold the
-  row's shape so the real cards drop in without a jump.
-- Each card has a different layout as well as a different accent: image on top (Stay), a day
-  timeline with a photo strip at the bottom (Experience), a ticket with the meal slot and image
-  on top, a tear line, then the restaurant (Food). Colour is never the only cue.
-- Research showed guests dropping off at the search filter panel before seeing a listing, so the
-  empty state has no filters. One tap on a suggestion gets a full plan.
-- Font: DM Sans stands in for Airbnb Cereal, which isn't available for licensing.
-
-## Placeholders to swap
-
-- Values marked `†` in code are placeholders until checked against the Host Reservation Card
-  and Kyoto Weekend Card specs.
-- `src/data/kyoto-weekend.ts` holds sample rows. Replace them with the Kyoto Weekend Content
-  workbook rows. Sample places and prices are illustrative, not real listings.
-- Photos are from Unsplash (free licence).
+The mock rows are Stays S1, Experiences E1 and Food F1 from the *Kyoto Weekend Prototype Content
+Pack*: $366 + $116 + $34 = $516 for 2 guests, inside the pack's $600 reference budget. Prices are
+USD as in the pack. The pack has no photo URLs (image rights not cleared), so each card's image
+spot shows "No photo yet".

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { ImageIcon } from "@/components/icons";
 
 // Two fixed renditions (2x the largest display size) so a photo's URL is
 // known ahead of render and can be preloaded while thinking is on screen.
@@ -37,7 +38,7 @@ type PhotoProps = {
   priority?: boolean;
 };
 
-/** Fills its sized parent. Grey box while loading or when src is "". */
+/** Fills its sized parent. Grey box while loading; a filler line when src is "". */
 export function Photo({ src, alt, size, className = "", priority }: PhotoProps) {
   const [loaded, setLoaded] = useState(false);
   return (
@@ -52,7 +53,12 @@ export function Photo({ src, alt, size, className = "", priority }: PhotoProps) 
           onLoad={() => setLoaded(true)}
           className={`photo object-cover group-hover:scale-[1.03] ${loaded ? "opacity-100" : "opacity-0"}`}
         />
-      ) : null}
+      ) : (
+        <span className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-faint p-1 text-center text-muted">
+          <ImageIcon className="size-5 opacity-70" />
+          <span className="text-[11px] leading-[14px] italic">No photo yet</span>
+        </span>
+      )}
     </div>
   );
 }

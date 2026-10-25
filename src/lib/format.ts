@@ -15,29 +15,18 @@ export function formatDate(iso: string) {
   return `${weekday} ${d} ${month} ${y}`;
 }
 
-/** "2025-04-11" -> { day: "11", month: "Apr" } */
-export function dayAndMonth(iso: string) {
-  if (!iso) return { day: "", month: "" };
-  const { d, month } = parts(iso);
-  return { day: String(d), month };
-}
+const CURRENCY_SYMBOLS: Record<string, string> = { USD: "$", JPY: "¥" };
 
-/** 38000 -> "¥38,000" */
-export function formatYen(value: number | null) {
+/** (168, "USD") -> "$168", (38000, "JPY") -> "¥38,000" */
+export function formatMoney(value: number | null, currency: string) {
   if (value === null) return "";
-  return `¥${value.toLocaleString("en-US")}`;
+  const symbol = CURRENCY_SYMBOLS[currency] ?? `${currency} `;
+  return `${symbol}${value.toLocaleString("en-US")}`;
 }
 
-/** 90 -> "1.5 hrs", 60 -> "1 hr", 45 -> "45 min" */
-export function formatDuration(mins: number | null) {
-  if (mins === null) return "";
-  if (mins < 60) return `${mins} min`;
-  const hours = mins / 60;
-  const label = Number.isInteger(hours) ? String(hours) : hours.toFixed(1);
-  return `${label} ${hours === 1 ? "hr" : "hrs"}`;
-}
-
-/** Joins the non-empty parts with a middle dot, Airbnb style. */
-export function dotJoin(...items: (string | null | undefined | false)[]) {
-  return items.filter(Boolean).join(" · ");
+/** 2.5 -> "2.5 hrs", 1 -> "1 hr", 0.75 -> "45 min" */
+export function formatHours(hours: number | null) {
+  if (hours === null) return "";
+  if (hours < 1) return `${Math.round(hours * 60)} min`;
+  return `${hours} ${hours === 1 ? "hr" : "hrs"}`;
 }

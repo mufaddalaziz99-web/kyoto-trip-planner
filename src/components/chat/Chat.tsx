@@ -5,7 +5,7 @@ import type { PlanItem, PlanResponse } from "@/lib/types";
 import { CardRow } from "@/components/cards/CardRow";
 import { PlanCard } from "@/components/cards/PlanCard";
 import { SkeletonCard } from "@/components/cards/SkeletonCard";
-import { preloadPhotos, type PhotoSize } from "@/components/cards/Photo";
+import { preloadPhotos } from "@/components/cards/Photo";
 import { SparkIcon } from "@/components/icons";
 import { Composer } from "./Composer";
 import { Header } from "./Header";
@@ -13,7 +13,7 @@ import { ThinkingBubble } from "./ThinkingBubble";
 import { Welcome } from "./Welcome";
 
 // Keep thinking on screen long enough to read, even when the mock answers instantly. †
-const MIN_THINKING_MS = 1500;
+const MIN_THINKING_MS = 2000;
 // Cards replace thinking in a fixed order, about this far apart. †
 const CARD_STAGGER_MS = 150;
 // Longest we'll hold thinking for photos on a slow connection before showing cards anyway.
@@ -38,7 +38,7 @@ async function fetchPlanWithPhotos(message: string): Promise<PlanResponse> {
   await Promise.race([
     preloadPhotos([
       [stay.photoUrl, "hero"],
-      ...experience.photoUrls.map((url) => [url, "thumb"] as [string, PhotoSize]),
+      [experience.photoUrl, "hero"],
       [food.photoUrl, "thumb"],
     ]),
     wait(MAX_PHOTO_WAIT_MS),
