@@ -25,3 +25,7 @@ The mock rows are Stays S1, Experiences E1 and Food F1 from the *Kyoto Weekend P
 Pack*: $366 + $116 + $34 = $516 for 2 guests, inside the pack's $600 reference budget. Prices are
 USD as in the pack. The pack has no photo URLs (image rights not cleared), so each card's image
 spot shows "No photo yet".
+
+**Stay price:** the Stay card shows $366 for 2 nights, the workbook's "Total for 2 Nights" for two
+guests. The $168 nightly rate is left off on purpose: 168 × 2 = 336, and the workbook doesn't
+explain the $30 gap, so showing both would put two prices on the card that don't agree.

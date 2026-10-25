@@ -8,7 +8,8 @@ import { Photo } from "./Photo";
 // Where you'll sleep: image box on top, details stacked below. Biggest text: the listing title.
 export function StayCard({ item }: { item: StayItem }) {
   const nights = item.nights === null ? "" : `${item.nights} ${item.nights === 1 ? "night" : "nights"}`;
-  const perNight = formatMoney(item.pricePerNight, item.currency);
+  // Only the workbook's total for the stay is shown. Its nightly rate x nights doesn't add up
+  // to that total (S1: 168 x 2 = 336, not 366), so showing both would contradict itself.
   const total = formatMoney(item.totalPrice, item.currency);
 
   return (
@@ -59,22 +60,16 @@ export function StayCard({ item }: { item: StayItem }) {
         </dl>
 
         <div className="mt-auto flex items-center justify-between gap-3 pt-2">
-          <div>
-            <p className="text-[15px] leading-5">
-              {perNight ? (
-                <>
-                  <span className="font-semibold">{perNight}</span>
-                  <span className="text-muted"> a night</span>
-                </>
-              ) : (
-                <Filler />
-              )}
-            </p>
-            <p className="text-[12px] leading-4 text-muted">
-              {total ? `${total} total` : <Filler />}
-              {nights && ` for ${nights}`}
-            </p>
-          </div>
+          <p className="text-[15px] leading-5">
+            {total ? (
+              <>
+                <span className="font-semibold">{total}</span>
+                <span className="text-muted"> for {orFiller(nights)}</span>
+              </>
+            ) : (
+              <Filler />
+            )}
+          </p>
           <button
             type="button"
             className="min-h-11 shrink-0 rounded-lg border border-ink px-4 text-[14px] font-semibold transition-colors hover:bg-faint active:scale-[0.98]"
