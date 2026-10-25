@@ -16,7 +16,7 @@ export function ThinkingBubble() {
   }, []);
 
   return (
-    <div role="status" aria-label="Planning your weekend" className="animate-fade-in inline-flex items-center gap-3 rounded-2xl rounded-tl-md bg-faint px-4 py-3">
+    <div role="status" aria-label="Planning your weekend" className="animate-fade-in inline-flex items-center self-start gap-3 rounded-2xl rounded-tl-md bg-faint px-4 py-3">
       <span className="flex items-center gap-1" aria-hidden="true">
         {[0, 1, 2].map((i) => (
           <span key={i} className="thinking-dot size-1.5 rounded-full bg-ink" style={{ animationDelay: `${i * 150}ms` }} />

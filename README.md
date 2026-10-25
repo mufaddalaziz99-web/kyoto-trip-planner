@@ -38,9 +38,13 @@ Open http://localhost:3000. No login, works on phone and laptop.
 - Colours, shadows and the enter curve come from airbnb.com's live tokens. Rausch pink is used
   only for the send button and the brand mark; each card carries its own accent from the spec
   (indigo, vermilion, matcha).
+- Layout: on a laptop the three cards sit in one row at equal height. On a tablet they form a
+  swipeable row that snaps card by card. On a phone they stack full width, as the spec asks, so
+  guests see all three without having to find the swipe. While thinking, skeleton cards hold the
+  row's shape so the real cards drop in without a jump.
 - Each card has a different layout as well as a different accent: image on top (Stay), a day
-  timeline with a photo strip at the bottom (Experience), a ticket with the image on the right
-  (Food). Colour is never the only cue.
+  timeline with a photo strip at the bottom (Experience), a ticket with the meal slot and image
+  on top, a tear line, then the restaurant (Food). Colour is never the only cue.
 - Research showed guests dropping off at the search filter panel before seeing a listing, so the
   empty state has no filters. One tap on a suggestion gets a full plan.
 - Font: DM Sans stands in for Airbnb Cereal, which isn't available for licensing.

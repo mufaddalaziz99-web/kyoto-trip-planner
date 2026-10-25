@@ -8,7 +8,7 @@ import { Photo } from "./Photo";
 export function ExperienceCard({ item }: { item: ExperienceItem }) {
   return (
     <CardShell label={`${item.label}: ${item.title}`}>
-      <div className="flex flex-col gap-2 p-4 pb-3">
+      <div className="flex flex-1 flex-col gap-2 p-4 pb-3">
         <TypeTag tone="experience" icon={<LanternIcon className="size-3.5" />}>
           {item.label}
         </TypeTag>

@@ -1,8 +1,9 @@
 import type { ReactNode } from "react";
 
 // Shared base every card inherits: white, 1px #DADDD8 border, 12px radius,
-// fills the chat bubble up to 360px. Padding lives in each card because the
-// image position (top, bottom strip, right) is part of the card's identity.
+// up to 360px wide, and stretched to the tallest card in its row. Padding lives
+// in each card because the image position (top, bottom strip, right) is part of
+// the card's identity.
 export function CardShell({
   children,
   label,
@@ -18,7 +19,7 @@ export function CardShell({
   return (
     <article
       aria-label={label}
-      className={`w-full max-w-[360px] rounded-xl border border-card-line bg-white shadow-elev-1 ${clip ? "overflow-hidden" : ""} ${className}`}
+      className={`group flex w-full max-w-[360px] flex-col rounded-xl border border-card-line bg-white shadow-[0_1px_2px_rgb(0_0_0/0.04)] transition-[transform,box-shadow] duration-300 ease-(--ease-standard) hover:-translate-y-0.5 hover:shadow-elev-3 ${clip ? "overflow-hidden" : ""} ${className}`}
     >
       {children}
     </article>

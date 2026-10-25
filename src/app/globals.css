@@ -136,8 +136,25 @@
   animation: shimmer 1.8s linear infinite;
 }
 
+@keyframes skeleton-sweep {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #f2f2f2 25%, #e9e9e9 40%, #f2f2f2 55%);
+  background-size: 400% 100%;
+  animation: skeleton-sweep 1.4s ease-in-out infinite;
+}
+
 .photo {
-  transition: opacity 300ms var(--ease-standard);
+  transition:
+    opacity 300ms var(--ease-standard),
+    transform 600ms var(--ease-standard);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -146,7 +163,8 @@
     animation-duration: 1ms;
   }
   .thinking-dot,
-  .shimmer-text {
+  .shimmer-text,
+  .skeleton {
     animation: none;
   }
   .shimmer-text {

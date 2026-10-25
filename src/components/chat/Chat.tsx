@@ -2,7 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { PlanItem, PlanResponse } from "@/lib/types";
+import { CardRow } from "@/components/cards/CardRow";
 import { PlanCard } from "@/components/cards/PlanCard";
+import { SkeletonCard } from "@/components/cards/SkeletonCard";
 import { preloadPhotos, type PhotoSize } from "@/components/cards/Photo";
 import { SparkIcon } from "@/components/icons";
 import { Composer } from "./Composer";
@@ -88,7 +90,7 @@ export function Chat() {
           role="log"
           aria-live="polite"
           aria-label="Conversation"
-          className="mx-auto w-full max-w-[760px] px-4 pt-6 pb-4 sm:px-6"
+          className="mx-auto w-full max-w-[1120px] px-4 pt-6 pb-4 sm:px-6"
         >
           {turns.length === 0 ? (
             <Welcome onPick={send} />
@@ -121,7 +123,7 @@ export function Chat() {
 function UserBubble({ text }: { text: string }) {
   return (
     <div className="animate-rise-in flex justify-end">
-      <p className="max-w-[85%] rounded-[22px] rounded-br-md bg-ink px-4 py-2.5 text-[15px] leading-[22px] text-white sm:max-w-[70%]">
+      <p className="max-w-[85%] rounded-[22px] rounded-br-md bg-ink px-4 py-2.5 text-[15px] leading-[22px] text-white sm:max-w-[480px]">
         {text}
       </p>
     </div>
@@ -140,21 +142,28 @@ function AssistantAnswer({ items }: { items: PlanItem[] | null }) {
 
       <div className="sm:pl-9">
         {items === null ? (
-          <ThinkingBubble />
+          // Skeletons hold the row's shape, so the cards drop into place without a jump.
+          <div className="flex flex-col gap-4">
+            <ThinkingBubble />
+            <CardRow>
+              <SkeletonCard variant="stay" />
+              <SkeletonCard variant="experience" className="hidden sm:flex" />
+              <SkeletonCard variant="food" className="hidden sm:flex" />
+            </CardRow>
+          </div>
         ) : (
-          <div className="flex flex-col gap-3">
-            <p className="animate-fade-in text-[15px] leading-[22px]">
-              Here’s a weekend for you: where you’ll sleep, what you’ll do each day, and where you’ll eat.
-            </p>
-            {items.map((item, i) => (
-              <div
-                key={item.type}
-                className="animate-rise-in"
-                style={{ animationDelay: `${i * CARD_STAGGER_MS}ms` }}
-              >
-                <PlanCard item={item} />
-              </div>
-            ))}
+          <div className="flex flex-col gap-4">
+            <div className="animate-fade-in">
+              <h2 className="text-[22px] leading-7 font-semibold tracking-[-0.02em]">Here’s your weekend</h2>
+              <p className="mt-1 text-[15px] leading-[22px] text-muted">
+                Where you’ll sleep, what you’ll do each day and where you’ll eat.
+              </p>
+            </div>
+            <CardRow staggerMs={CARD_STAGGER_MS}>
+              {items.map((item) => (
+                <PlanCard key={item.type} item={item} />
+              ))}
+            </CardRow>
           </div>
         )}
       </div>

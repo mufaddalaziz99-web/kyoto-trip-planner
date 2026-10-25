@@ -18,7 +18,7 @@ export function StayCard({ item }: { item: StayItem }) {
         </span>
       </div>
 
-      <div className="flex flex-col gap-2 p-4">
+      <div className="flex flex-1 flex-col gap-2 p-4">
         <TypeTag tone="stay" icon={<BedIcon className="size-3.5" />}>
           {item.label}
         </TypeTag>
@@ -39,15 +39,15 @@ export function StayCard({ item }: { item: StayItem }) {
         <dl className="mt-1 grid grid-cols-2 rounded-lg border border-subtle text-left">
           <div className="px-3 py-2.5">
             <dt className="text-[10px] leading-3 font-bold tracking-[0.04em] uppercase">Check-in</dt>
-            <dd className="mt-1 text-[14px] leading-[18px]">{formatDate(item.checkIn)}</dd>
+            <dd className="mt-1 text-[13px] leading-[18px] whitespace-nowrap">{formatDate(item.checkIn)}</dd>
           </div>
           <div className="border-l border-subtle px-3 py-2.5">
             <dt className="text-[10px] leading-3 font-bold tracking-[0.04em] uppercase">Check-out</dt>
-            <dd className="mt-1 text-[14px] leading-[18px]">{formatDate(item.checkOut)}</dd>
+            <dd className="mt-1 text-[13px] leading-[18px] whitespace-nowrap">{formatDate(item.checkOut)}</dd>
           </div>
         </dl>
 
-        <div className="mt-1 flex items-center justify-between gap-3">
+        <div className="mt-auto flex items-center justify-between gap-3 pt-2">
           <p className="text-[15px] leading-5">
             <span className="font-semibold">{formatYen(item.pricePerNight)}</span>
             <span className="text-muted"> a night</span>

@@ -50,7 +50,7 @@ export function Photo({ src, alt, size, className = "", priority }: PhotoProps) 
           unoptimized
           priority={priority}
           onLoad={() => setLoaded(true)}
-          className={`photo object-cover ${loaded ? "opacity-100" : "opacity-0"}`}
+          className={`photo object-cover group-hover:scale-[1.03] ${loaded ? "opacity-100" : "opacity-0"}`}
         />
       ) : null}
     </div>
